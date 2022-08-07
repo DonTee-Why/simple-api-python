@@ -3,9 +3,10 @@ from datetime import timedelta
 import os
 
 
-redis_host = os.environ.get("REDIS_ENDPOINT_URI")
-redis_password = os.environ.get("REDIS_PASSWORD")
-redis_db = os.environ.get("REDIS_DB")
+redis_host = os.environ.get("REDIS_ENDPOINT_URI") or '127.0.0.1'
+redis_password = os.environ.get("REDIS_PASSWORD") or ''
+redis_db = os.environ.get("REDIS_DB") or 0
+redis_port = os.environ.get("REDIS_PORT") or '11279'
 
 r = Redis(host=redis_host, password=redis_password, db=redis_db)
 # r = Redis(host='127.0.0.1', port=6379, db=0)
