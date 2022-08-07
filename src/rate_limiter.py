@@ -1,7 +1,16 @@
 from redis import Redis
 from datetime import timedelta
+import os
 
-def rate_limiter(r: Redis, key: str, limit: int, period: timedelta):
+
+redis_host = os.environ.get("REDIS_ENDPOINT_URI")
+redis_password = os.environ.get("REDIS_PASSWORD")
+redis_db = os.environ.get("REDIS_DB")
+
+r = Redis(host=redis_host, password=redis_password, db=redis_db)
+# r = Redis(host='127.0.0.1', port=6379, db=0)
+
+def rate_limiter(key: str, limit: int, period: timedelta):
     """Limits the number of requests made by the user within a period of time.
 
     It uses the time bucket algorithm
