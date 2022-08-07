@@ -17,7 +17,7 @@ def calculate_age(request: Request, dob: int = None):
             Date of birth of the person. Date format: DD-MM-YYYY
 
     Returns:
-        age: json
+        age: int
     """
     if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
         raise ApiException(code=429, detail="Request limit reached.")
@@ -41,4 +41,4 @@ def calculate_age(request: Request, dob: int = None):
         # Calculate age
         age = current_date.year - date_of_birth.year - is_preceeding_dob
 
-        return {age}
+        return age
