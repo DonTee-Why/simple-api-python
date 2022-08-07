@@ -1,15 +1,16 @@
-from main import app
+from main import app, Request
 from src import *
 from datetime import datetime
+from redis import Redis
 
+r = Redis(host='127.0.0.1', port=6379, db=0)
 
 @app.get("/")
 def read_root():
     return {"message": "Hello"}
 
-
 @app.get("/howold")
-def calculate_age(dob: str = None):
+def calculate_age(request: Request, dob: str = None):
     """Calculates the age of a person by using the person's date of birth
 
     Parameters:
@@ -19,8 +20,12 @@ def calculate_age(dob: str = None):
     Returns:
         age: json
     """
-    
-    if dob is not None:
+    if rate_limiter(r, request.client.host, 3, timedelta(seconds=1)):
+        raise ApiException(code=429, detail="Request limit reached.")
+
+    if not dob or dob is None:
+        raise ApiException(code=422, detail="Unprocessable Entity")
+    else:
         try:
             # Parse date of birth parameter
             date_of_birth = datetime.strptime(dob, '%d-%m-%Y')
@@ -30,11 +35,9 @@ def calculate_age(dob: str = None):
         # Get current date
         current_date = datetime.now().date();
 
-        # Return 1 (i.e int value of bool True) if the current date precedes the date of birth's month and year
+        # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
         is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
         # Calculate age
         age = current_date.year - date_of_birth.year - is_preceeding_dob
 
-        return {"age": age}
-    else:
-        raise ApiException(code=422, detail="Unprocessable Entity")
+        return {age}
