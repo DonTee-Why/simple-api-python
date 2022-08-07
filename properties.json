@@ -3,6 +3,6 @@
     "track": "backend",
     "email": "timiddon97@gmail.com",
     "githubUsername": "DonTee-Why",
-    "deployedAppURL": "http://127.0.0.1:8000",
+    "deployedAppURL": "https://simple-api-py.herokuapp.com/",
     "explainer": ""
 }
