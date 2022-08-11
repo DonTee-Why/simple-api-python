@@ -1,3 +1,4 @@
+from time import time
 from main import app, Request
 from src import *
 from datetime import datetime
@@ -19,28 +20,33 @@ def calculate_age(request: Request, dob: int|str = None):
     Returns:
         age: int
     """
-    if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
+    if rate_limiter(request.client.host, 3, timedelta(seconds=10)):
         print("Limit reached");
         raise ApiException(code=429, detail="Request limit reached.")
     else:
         if not dob or dob is None:
             raise ApiException(code=422, detail="Unprocessable Entity")
         else:
-            try:
-                # Parse date of birth parameter
-                date_of_birth = datetime.fromtimestamp(int(dob))
-            except ValueError:
-                raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
-            except TypeError:
-                raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
+            # Parse date of birth parameter
+            date_of_birth = check_timestamp(dob)
             
             # Get current date
             current_date = datetime.now();
-            if date_of_birth > datetime.now():
-                raise ApiException(code=400, detail="The dob is greater than the current time.")
+            # if date_of_birth > datetime.now():
+            #     raise ApiException(code=400, detail="The dob is greater than the current time.")
+
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
+
             # Calculate age
             age = current_date.year - date_of_birth.year - is_preceeding_dob
 
             return age
+
+def check_timestamp(dob):
+    try:
+        # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
+        new_dob = datetime.fromtimestamp(int(dob/1000.0)) if dob > datetime.timestamp(datetime.now()) else datetime.fromtimestamp(int(dob))
+        return new_dob
+    except:
+        raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
