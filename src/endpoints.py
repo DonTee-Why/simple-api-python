@@ -44,5 +44,3 @@ def calculate_age(request: Request, dob: int|str):
             age = current_date.year - date_of_birth.year - is_preceeding_dob
 
             return age
-
-__all__ = ["hello_world", "calculate_age"]

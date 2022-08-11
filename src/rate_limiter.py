@@ -42,5 +42,3 @@ def rate_limiter(key: str, limit: int, period: timedelta):
         return False
     else:
         return True
-
-__all__ = ["rate_limiter"]
