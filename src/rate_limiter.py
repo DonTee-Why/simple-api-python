@@ -14,7 +14,7 @@ r = Redis(host=redis_host, password=redis_password, port=redis_port)
 def rate_limiter(key: str, limit: int, period: timedelta):
     """Limits the number of requests made by the user within a period of time.
 
-    It uses the time bucket algorithm
+    It uses the token bucket algorithm
 
     Parameters:
         r: Redis
@@ -36,12 +36,11 @@ def rate_limiter(key: str, limit: int, period: timedelta):
     if r.setnx(key, limit):
         r.expire(key, int(period.total_seconds()))
     user_record = r.get(key)
-    # print("Total requests: ", int(user_record))
     
     if user_record and int(user_record) > 0:
         r.decrby(key, 1)
-        # print("No of requests left: ", r.get(key))
         return False
     else:
-        # print("Requests left: ", int(user_record))
         return True
+
+__all__ = ["rate_limiter"]

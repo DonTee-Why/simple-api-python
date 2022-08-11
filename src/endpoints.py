@@ -1,8 +1,7 @@
-from time import time
-from main import app, Request
-from src import *
+from fastapi import Request
+from main import app
+from src import rate_limiter
 from datetime import datetime, timedelta
-from redis import Redis
 
 
 @app.get("/")
@@ -21,34 +20,23 @@ def calculate_age(request: Request, dob: int|str):
         age: int
     """
     if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
-        # print("Limit reached");
-        # raise ApiException(code=429, detail="Request limit reached.")
         return 429;
     else:
         if not dob or dob is None:
-            # raise ApiException(code=422, detail="Unprocessable Entity")
             return 422;
         else:
-            # print("Date of birth: ", dob)
-            # Parse date of birth parameter
-            date_of_birth = check_timestamp(dob)
-            print(date_of_birth)
-            
-            # Get current date
-            current_date = datetime.now();
-            
             try:
                 # Get the datetime object for the timestamp
                 date_of_birth = datetime(1970, 1, 1, 0, 0, 0) + timedelta(microseconds=dob)
             except Exception:
-                # print("Invalid Input")
-                # print("The dob field is not a valid timestamp.", dob)
-                # raise ApiException(code=422, detail="The dob field is not a valid timestamp.")
                 return 422
-                
+            
+            # Get the current date
+            current_date = datetime.now();
+
             if(date_of_birth > current_date):
                 return 400
-
+                
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
 
@@ -57,14 +45,4 @@ def calculate_age(request: Request, dob: int|str):
 
             return age
 
-def check_timestamp(dob: int):
-    try:
-        # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
-        new_dob = datetime(1970, 1, 1, 0, 0, 0) + timedelta(microseconds=dob)
-        # print("Date of birth: ", new_dob)
-        return new_dob
-    except Exception:
-        # print("Invalid Input")
-        # print("The dob field is not a valid timestamp.", dob)
-        # raise ApiException(code=422, detail="The dob field is not a valid timestamp.")
-        return 422
+__all__ = ["hello_world", "calculate_age"]
