@@ -5,7 +5,7 @@ from redis import Redis
 
 
 @app.get("/")
-def read_root():
+def hello_world():
     return {"message": "Hello"}
 
 @app.get("/howold")
