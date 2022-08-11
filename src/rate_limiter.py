@@ -29,7 +29,6 @@ def rate_limiter(key: str, limit: int, period: timedelta):
     Returns:
         bool
     """
-    
     if r.setnx(key, limit):
         r.expire(key, int(period.total_seconds()))
     user_record = r.get(key)

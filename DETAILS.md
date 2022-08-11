@@ -8,12 +8,12 @@
 
 This is a simple API written in python. The features of this API are:
 
-- A GET/howold endpoint.
-- Calculate and return the age of a person, given the date of birth (dob), in timestamp format, passed as query parameters to the GET/howold endpoint.
-- Limits calls to the endpoint to allow a maimum of 3 calls per second.
-- Return the right HTTP error if the date of birth parameter (dob) is not properly used or if the value is invalid
+  - A `GET /howold` endpoint.
+  - Calculate and return the age of a person, given the date of birth (dob), in timestamp format, passed as query parameters to the GET/howold endpoint.
+  - Limits calls to the endpoint to allow a maimum of 3 calls per second.
+  - Return the right HTTP error if the date of birth parameter (dob) is not properly used or if the value is invalid
 
-## How does this work?
+## How does this work
 
 This API was implemented using a python framework called [FastAPI](https://fastapi.tiangolo.com/). When a request is made to the `/howold` endpoint, it first hits the `main.py` file. It then gets to the `endpoints.py` file which contains the function implementation for the endpoint. The function then accepts the parameter passed to the endpoint, performs operations like rate limiting and other necessary checks and then returns the appropriate response.
 
@@ -39,13 +39,13 @@ The age is then calculated using the date of birth and the current date. The fac
 
 This is where the the rate limiter function is implemented. Thes function accepts the following parameters:
 
-- **Key** as a String: The IP address of the user
-- **Limit** as an Integer: The number of requests allowed within a period of time
-- **Period** in Seconds: The period of time a certain number of requests are allowed
+  - **Key** as a String: The IP address of the user
+  - **Limit** as an Integer: The number of requests allowed within a period of time
+  - **Period** in Seconds: The period of time a certain number of requests are allowed
 
 The rate limiter uses the token bucket algorithm. This implementation make use of [Redis](https://redis.io/) for cache to store information regarding requests. Redis cache provides a key-value store. The rate limiter works as follows:
 
-- A Redis key-value pair record is created where the key is the user's IP address and the value is the limit. If the record exists, it is set to expire in the specified period.
-- When a request is made, if the limit is not used up (i.e not equal to zero), it is processed. Otherwise, the request is denied.
-- When a request is processed, the limit is reduced.
-- After the period has elapsed, the limit is then set to its original value.
+  - A Redis key-value pair record is created where the key is the user's IP address and the value is the limit. If the record exists, it is set to   expire in the specified period.
+  - When a request is made, if the limit is not used up (i.e not equal to zero), it is processed. Otherwise, the request is denied.
+  - When a request is processed, the limit is reduced.
+  - After the period has elapsed, the limit is then set to its original value.

@@ -35,7 +35,6 @@ def calculate_age(request: Request, dob: int|str):
 
             if(date_of_birth > current_date):
                 return 400
-                
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
 
