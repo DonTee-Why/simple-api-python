@@ -1,7 +1,7 @@
 from time import time
 from main import app, Request
 from src import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from redis import Redis
 
 
@@ -28,7 +28,7 @@ def calculate_age(request: Request, dob: int|str):
         if not dob or dob is None:
             raise ApiException(code=422, detail="Unprocessable Entity")
         else:
-            print("Date of birth: ", dob)
+            # print("Date of birth: ", dob)
             # Parse date of birth parameter
             date_of_birth = check_timestamp(dob)
             
@@ -48,10 +48,10 @@ def calculate_age(request: Request, dob: int|str):
 def check_timestamp(dob):
     try:
         # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
-        new_dob = datetime.fromtimestamp(int(dob/1000))
+        new_dob = datetime(1970, 1, 1, 0, 0, 0) + timedelta(seconds=(dob/1000))
         print("Date of birth: ", new_dob)
         return new_dob
     except:
-        print("Invalid Input")
+        # print("Invalid Input")
         # print("The dob field is not a valid timestamp.", dob)
         raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
