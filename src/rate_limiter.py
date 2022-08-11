@@ -19,13 +19,10 @@ def rate_limiter(key: str, limit: int, period: timedelta):
     Parameters:
         r: Redis
             Redis client
-            
         key: string
             Ip address of the user
-            
         limit: int
             The number of requests allowed within a period of time
-            
         period: timedelta
             The period of time a certain number of requests are allowed
 

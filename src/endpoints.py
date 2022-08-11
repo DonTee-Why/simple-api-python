@@ -30,7 +30,6 @@ def calculate_age(request: Request, dob: int|str):
                 date_of_birth = datetime(1970, 1, 1, 0, 0, 0) + timedelta(microseconds=dob)
             except Exception:
                 return 422
-            
             # Get the current date
             current_date = datetime.now();
 
