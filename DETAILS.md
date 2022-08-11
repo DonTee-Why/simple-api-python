@@ -39,13 +39,13 @@ The age is then calculated using the date of birth and the current date. The fac
 
 This is where the the rate limiter function is implemented. Thes function accepts the following parameters:
 
-  - **Key** as a String: The IP address of the user
-  - **Limit** as an Integer: The number of requests allowed within a period of time
-  - **Period** in Seconds: The period of time a certain number of requests are allowed
+- **Key** as a String: The IP address of the user
+- **Limit** as an Integer: The number of requests allowed within a period of time
+- **Period** in Seconds: The period of time a certain number of requests are allowed
 
 The rate limiter uses the token bucket algorithm. This implementation make use of [Redis](https://redis.io/) for cache to store information regarding requests. Redis cache provides a key-value store. The rate limiter works as follows:
 
-  - A Redis key-value pair record is created where the key is the user's IP address and the value is the limit. If the record exists, it is set to   expire in the specified period.
-  - When a request is made, if the limit is not used up (i.e not equal to zero), it is processed. Otherwise, the request is denied.
-  - When a request is processed, the limit is reduced.
-  - After the period has elapsed, the limit is then set to its original value.
+- A Redis key-value pair record is created where the key is the user's IP address and the value is the limit. If the record exists, it is set to expire in the specified period.
+- When a request is made, if the limit is not used up (i.e not equal to zero), it is processed. Otherwise, the request is denied.
+- When a request is processed, the limit is reduced.
+- After the period has elapsed, the limit is then set to its original value.
