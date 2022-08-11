@@ -8,10 +8,10 @@
 
 This is a simple API written in python. The features of this API are:
 
-  - A `GET /howold` endpoint.
-  - Calculate and return the age of a person, given the date of birth (dob), in timestamp format, passed as query parameters to the GET/howold endpoint.
-  - Limits calls to the endpoint to allow a maimum of 3 calls per second.
-  - Return the right HTTP error if the date of birth parameter (dob) is not properly used or if the value is invalid
+- A `GET /howold` endpoint.
+- Calculate and return the age of a person, given the date of birth (dob), in timestamp format, passed as query parameters to the GET/howold endpoint.
+- Limits calls to the endpoint to allow a maimum of 3 calls per second.
+- Return the right HTTP error if the date of birth parameter (dob) is not properly used or if the value is invalid
 
 ## How does this work
 

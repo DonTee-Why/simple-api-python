@@ -32,7 +32,6 @@ def rate_limiter(key: str, limit: int, period: timedelta):
     if r.setnx(key, limit):
         r.expire(key, int(period.total_seconds()))
     user_record = r.get(key)
-    
     if user_record and int(user_record) > 0:
         r.decrby(key, 1)
         return False
