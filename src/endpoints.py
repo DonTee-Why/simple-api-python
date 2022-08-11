@@ -22,9 +22,8 @@ def calculate_age(request: Request, dob: timedelta):
         age: int
     """
     if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
-        # print("Limit reached");
-        # raise ApiException(code=429, detail="Request limit reached.")
-        return 429;
+        raise ApiException(code=429, detail="Request limit reached.")
+        # return 429;
     else:
         if not dob or dob is None:
             raise ApiException(code=422, detail="Unprocessable Entity")
@@ -44,7 +43,7 @@ def calculate_age(request: Request, dob: timedelta):
             # Calculate age
             age = current_date.year - date_of_birth.year - is_preceeding_dob
 
-            return age
+            return "age"
 
 def check_timestamp(dob: timedelta):
     try:
