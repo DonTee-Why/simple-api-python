@@ -28,6 +28,7 @@ def calculate_age(request: Request, dob: int|str = None):
         if not dob or dob is None:
             raise ApiException(code=422, detail="Unprocessable Entity")
         else:
+            print("Date of birth: ", dob)
             # Parse date of birth parameter
             date_of_birth = check_timestamp(dob)
             
@@ -48,7 +49,9 @@ def check_timestamp(dob):
     try:
         # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
         new_dob = datetime.fromtimestamp(int(dob/1000)) if dob > datetime.timestamp(datetime.now()) else datetime.fromtimestamp(int(dob))
+        print(new_dob)
         return new_dob
     except:
+        print("Here")
         # print("The dob field is not a valid timestamp.", dob)
         raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
