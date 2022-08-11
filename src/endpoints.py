@@ -26,8 +26,7 @@ def calculate_age(request: Request, dob: int|str = None):
         return 429;
     else:
         if not dob or dob is None:
-            # raise ApiException(code=422, detail="Unprocessable Entity")
-            return 422
+            raise ApiException(code=422, detail="Unprocessable Entity")
         else:
             # Parse date of birth parameter
             date_of_birth = check_timestamp(dob)
@@ -35,8 +34,7 @@ def calculate_age(request: Request, dob: int|str = None):
             # Get current date
             current_date = datetime.now();
             if date_of_birth > datetime.now():
-                # raise ApiException(code=400, detail="The dob is greater than the current time.")
-                return 400
+                raise ApiException(code=400, detail="The dob is greater than the current time.")
 
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
@@ -53,5 +51,4 @@ def check_timestamp(dob):
         return new_dob
     except:
         # print("The dob field is not a valid timestamp.", dob)
-        # raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
-        return 400
+        raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
