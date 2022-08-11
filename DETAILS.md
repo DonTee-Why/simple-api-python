@@ -1,8 +1,6 @@
 # Simple-Api-Python
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
-
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bc2de4f14c2149aaa63975f776eead50)](https://www.codacy.com/gh/DonTee-Why/simple-api-python/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DonTee-Why/simple-api-python&amp;utm_campaign=Badge_Grade)
 
 ## Design
 
