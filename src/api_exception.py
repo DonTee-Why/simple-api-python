@@ -12,5 +12,5 @@ class ApiException(HTTPException):
 def api_exception_handler(request: Request, ex: ApiException):
     return JSONResponse(
         status_code=ex.status_code,
-        content={"message": f"{ex.detail}"}
+        content={"status_code": f"{ex.status_code}", "message": f"{ex.detail}"}
     )
