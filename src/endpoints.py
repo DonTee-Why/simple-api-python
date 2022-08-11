@@ -2,6 +2,7 @@ from time import time
 from main import app, Request
 from src import *
 from datetime import datetime, timedelta
+from time import time
 from redis import Redis
 
 
@@ -10,11 +11,11 @@ def hello_world():
     return {"message": "Hello"}
 
 @app.get("/howold")
-def calculate_age(request: Request, dob: int):
+def calculate_age(request: Request, dob: timedelta):
     """Calculates the age of a person by using the person's date of birth
 
     Parameters:
-        dob: string
+        dob: timestamp
             Date of birth of the person. Date format: DD-MM-YYYY
 
     Returns:
@@ -45,13 +46,13 @@ def calculate_age(request: Request, dob: int):
 
             return age
 
-def check_timestamp(dob: int):
+def check_timestamp(dob: timedelta):
     try:
         # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
-        new_dob = datetime(1970, 1, 1, 0, 0, 0) + timedelta(microseconds=dob)
+        new_dob = datetime(1970, 1, 1, 0, 0, 0) + dob/1000
         # print("Date of birth: ", new_dob)
         return new_dob
     except Exception:
-        # print("Invalid Input")
+        print("Invalid Input")
         # print("The dob field is not a valid timestamp.", dob)
         raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
