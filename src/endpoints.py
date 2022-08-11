@@ -46,7 +46,8 @@ def calculate_age(request: Request, dob: int|str = None):
 def check_timestamp(dob):
     try:
         # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
-        new_dob = datetime.fromtimestamp(int(dob/1000.0)) if dob > datetime.timestamp(datetime.now()) else datetime.fromtimestamp(int(dob))
+        new_dob = datetime.fromtimestamp(int(dob/1000)) if dob > datetime.timestamp(datetime.now()) else datetime.fromtimestamp(int(dob))
         return new_dob
     except:
+        print("The dob field is not a valid timestamp.", dob)
         raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
