@@ -10,7 +10,7 @@ def hello_world():
     return {"message": "Hello"}
 
 @app.get("/howold")
-def calculate_age(request: Request, dob: int|str = None):
+def calculate_age(request: Request, dob: int|str):
     """Calculates the age of a person by using the person's date of birth
 
     Parameters:
