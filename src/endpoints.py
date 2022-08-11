@@ -22,12 +22,11 @@ def calculate_age(request: Request, dob: timedelta):
         age: int
     """
     if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
-        # print("Limit reached");
-        # raise ApiException(code=429, detail="Request limit reached.")
         return 429;
     else:
         if not dob or dob is None:
-            raise ApiException(code=422, detail="Unprocessable Entity")
+            return 422
+            # raise ApiException(code=422, detail="Unprocessable Entity")
         else:
             # print("Date of birth: ", dob)
             # Parse date of birth parameter
@@ -36,7 +35,8 @@ def calculate_age(request: Request, dob: timedelta):
             # Get current date
             current_date = datetime.now();
             if date_of_birth > datetime.now():
-                raise ApiException(code=400, detail="The dob is greater than the current time.")
+                return 400
+                # raise ApiException(code=400, detail="The dob is greater than the current time.")
 
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
@@ -50,9 +50,9 @@ def check_timestamp(dob: timedelta):
     try:
         # Check if the timestamp is in seconds or milliseconds and returns the apprpriate timestamp
         new_dob = datetime(1970, 1, 1, 0, 0, 0) + dob/1000
-        # print("Date of birth: ", new_dob)
         return new_dob
     except Exception:
-        print("Invalid Input")
+        # print("Invalid Input")
         # print("The dob field is not a valid timestamp.", dob)
-        raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
+        # raise ApiException(code=400, detail="The dob field is not a valid timestamp.")
+        return 400
