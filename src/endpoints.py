@@ -22,8 +22,8 @@ def calculate_age(request: Request, dob: timedelta):
         age: int
     """
     if rate_limiter(request.client.host, 3, timedelta(seconds=1)):
-        raise ApiException(code=429, detail="Request limit reached.")
-        # return 429;
+        # raise ApiException(code=429, detail="Request limit reached.")
+        return 429;
     else:
         if not dob or dob is None:
             raise ApiException(code=422, detail="Unprocessable Entity")
