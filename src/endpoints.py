@@ -23,7 +23,7 @@ def calculate_age(request: Request, dob: int|str):
         return 429;
     else:
         if not dob or dob is None:
-            return 422;
+            return 400;
         else:
             try:
                 # Get the datetime object for the timestamp
@@ -34,7 +34,7 @@ def calculate_age(request: Request, dob: int|str):
             current_date = datetime.now();
 
             if(date_of_birth > current_date):
-                return 400
+                return 422
             # Return 1 or 0 (i.e int value of bool) if the current date precedes the date of birth's month and year or not
             is_preceeding_dob = (current_date.month, current_date.day) < (date_of_birth.month, date_of_birth.day)
 
